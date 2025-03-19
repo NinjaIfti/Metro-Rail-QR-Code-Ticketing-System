@@ -82,7 +82,7 @@
                             <i class="fas fa-train text-green-600 text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="font-semibold">16</h4>
+                            <h4 class="font-semibold">17</h4>
                             <p class="text-sm text-gray-500">Stations</p>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                             <i class="fas fa-route text-blue-600 text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="font-semibold">21 km</h4>
+                            <h4 class="font-semibold">21.26 km</h4>
                             <p class="text-sm text-gray-500">Track Length</p>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                             <i class="fas fa-users text-purple-600 text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="font-semibold">60,000+</h4>
+                            <h4 class="font-semibold">300,000+</h4>
                             <p class="text-sm text-gray-500">Daily Passengers</p>
                         </div>
                     </div>
@@ -117,15 +117,15 @@
                     <ul class="space-y-2">
                         <li class="flex justify-between">
                             <span class="text-gray-600">Weekdays:</span>
-                            <span class="font-medium">7:00 AM - 10:00 PM</span>
+                            <span class="font-medium">7:10 AM - 09:40 PM</span>
                         </li>
                         <li class="flex justify-between">
                             <span class="text-gray-600">Weekends:</span>
                             <span class="font-medium">8:00 AM - 10:00 PM</span>
                         </li>
                         <li class="flex justify-between">
-                            <span class="text-gray-600">Holidays:</span>
-                            <span class="font-medium">9:00 AM - 9:00 PM</span>
+                            <span class="text-gray-600">Holidays            :</span>
+                            <span class="font-medium">7:10 AM - 9:40 PM</span>
                         </li>
                     </ul>
                 </div>

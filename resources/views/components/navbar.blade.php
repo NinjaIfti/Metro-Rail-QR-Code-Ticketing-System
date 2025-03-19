@@ -13,10 +13,11 @@
                 <i class="fas fa-home text-xs"></i>
                 <span>Home</span>
             </a>
-            <a href="/buy-ticket" class="hover:text-metro-secondary transition duration-300 flex items-center space-x-1">
+            <a href="{{ route('buy-tickets') }}" class="hover:text-metro-secondary transition duration-300 flex items-center space-x-1">
                 <i class="fas fa-ticket-alt text-xs"></i>
                 <span>Buy Ticket</span>
             </a>
+
             <a href="/schedule" class="hover:text-metro-secondary transition duration-300 flex items-center space-x-1">
                 <i class="fas fa-clock text-xs"></i>
                 <span>Schedule</span>
