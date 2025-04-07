@@ -25,4 +25,5 @@ Route::view('profile', 'profile')
 
 require __DIR__.'/auth.php';
 Route::view('buy-ticket', 'layouts.tickets')->name('buy-tickets');
+Route::view('FAQ', 'layouts.faq')->name('FAQ');
 

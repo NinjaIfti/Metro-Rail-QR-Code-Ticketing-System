@@ -22,7 +22,7 @@
                 <i class="fas fa-clock text-xs"></i>
                 <span>Schedule</span>
             </a>
-            <a href="/faq" class="hover:text-metro-secondary transition duration-300 flex items-center space-x-1">
+            <a href="{{ route('FAQ') }}" class="hover:text-metro-secondary transition duration-300 flex items-center space-x-1">
                 <i class="fas fa-question-circle text-xs"></i>
                 <span>FAQ</span>
             </a>
