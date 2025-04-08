@@ -36,6 +36,10 @@ export default {
                 danger: '#dc3545',
                 light: '#f8f9fa',
                 dark: '#343a40',
+                // Add the metro colors here
+                'metro-primary': '#0078C8', // Replace with your desired primary color
+                'metro-dark': '#00517A',    // Replace with your desired dark color
+                'metro-light': '#E6F4FF',   // Replace with your desired light color
             },
             fontFamily: {
                 sans: ['Outfit', 'sans-serif'],
