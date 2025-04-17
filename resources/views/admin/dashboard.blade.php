@@ -7,6 +7,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // Wait for the DOM to load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the user menu button and the dropdown menu
+            const userMenuButton = document.getElementById('userMenuButton');
+            const userMenu = document.getElementById('userMenu');
+
+            if (userMenuButton && userMenu) {
+                // Toggle the dropdown visibility when the user clicks the button
+                userMenuButton.addEventListener('click', function(event) {
+                    event.stopPropagation();  // Prevent event from bubbling up to the document
+                    userMenu.classList.toggle('hidden');
+                });
+
+                // Close the dropdown if the user clicks anywhere outside the button or the menu
+                document.addEventListener('click', function(event) {
+                    if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
+            } else {
+                console.error('User menu button or menu not found.');
+            }
+        });
+    </script>
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -86,12 +111,11 @@
                 <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     <i class="fas fa-user-circle mr-2"></i> Profile
                 </a>
-                <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     <i class="fas fa-cog mr-2"></i> Settings
                 </a>
                 <div class="border-t border-gray-100"></div>
-                <a href=""
-                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                    class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                     <i class="fas fa-sign-out-alt mr-2"></i> Logout
                 </a>
@@ -475,39 +499,75 @@
         <div class="bg-white rounded-lg shadow-md mb-6">
             <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                 <h2 class="font-bold text-gray-800">Recent Users</h2>
-                <button class="text-metro-primary text-sm hover:underline">View All Users</button>
+                <a href="{{ route('admin.users') }}" class="text-metro-primary text-sm hover:underline">
+                    View All Users
+                </a>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
-                    <tbody class="bg-gray-50">
+                    <thead class="bg-gray-50">
                     <tr>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User
-                        </th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email
-                        </th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role
-                        </th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                        </th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Joined
-                        </th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
                         <th scope="col"
-                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                        </th>
+                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach($recentUsers as $user)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap flex items-center space-x-3">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full"
+                                         src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=f3f4f6&color=1f2937"
+                                         alt="{{ $user->name }}">
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">{{ $user->name }}</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                @if($user->roles->first()->name == 'admin') bg-red-100 text-red-800
+                                @elseif($user->roles->first()->name == 'train_master') bg-yellow-100 text-yellow-800
+                                @else bg-blue-100 text-blue-800 @endif">
+                                {{ ucfirst($user->roles->first()->name) }}
+                            </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                {{ $user->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ ucfirst($user->status) }}
+                            </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $user->created_at->diffForHumans() }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="{{ route('admin.users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">
+                                    Edit
+                                </a>
+                                <button onclick="confirmDelete('{{ route('admin.users.delete', $user->id) }}')" class="text-red-600 hover:text-red-900 focus:outline-none focus:underline">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
+
 
         <!-- Schedule Management Preview -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">

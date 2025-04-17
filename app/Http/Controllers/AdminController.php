@@ -25,23 +25,24 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function dashboard()
-    {
-        // Get statistics for the dashboard
-        $stats = [
-            'users_count' => User::count(),
-            'active_users' => User::where('email_verified_at', '!=', null)->count(),
-            'commuters' => User::role('commuter')->count(),
-            'train_masters' => User::role('train_master')->count(),
-            'admins' => User::role('admin')->count(),
-            // Add other stats as needed
-        ];
+ public function dashboard()
+ {
+     // Get statistics for the dashboard
+     $stats = [
+         'users_count' => User::count(),
+         'active_users' => User::where('email_verified_at', '!=', null)->count(),
+         'commuters' => User::role('commuter')->count(),
+         'train_masters' => User::role('train_master')->count(),
+         'admins' => User::role('admin')->count(),
+         // Add other stats as needed
+     ];
 
-        // Get recent users
-        $recentUsers = User::latest()->take(5)->get();
+     // Get recent users
+     $recentUsers = User::latest()->take(5)->get(); // Fetch the latest 5 users
 
-        return view('admin.dashboard', compact('stats', 'recentUsers'));
-    }
+     return view('admin.dashboard', compact('stats', 'recentUsers')); // Pass users to the view
+ }
+
 
     /**
      * Show all users.
@@ -103,6 +104,33 @@ class AdminController extends Controller
         $roles = Role::all();
         return view('admin.users.edit', compact('user', 'roles'));
     }
+
+public function showUserDetails($id)
+{
+    try {
+        \Log::info("Fetching user details for ID: {$id}");
+
+        $user = User::findOrFail($id);
+        $role = $user->roles->first()->name ?? 'No Role';
+
+        \Log::info("User found: " . json_encode($user));
+
+        return response()->json([
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => ucfirst($role),
+            'status' => ucfirst($user->status),
+            'last_login_at' => $user->last_login_at ? $user->last_login_at->diffForHumans() : 'Never'
+        ]);
+    } catch (\Exception $e) {
+        \Log::error("Error fetching user details for ID: {$id}: " . $e->getMessage());
+        return response()->json(['error' => 'User not found'], 404);
+    }
+}
+
+
+
+
 
     /**
      * Update the specified user.

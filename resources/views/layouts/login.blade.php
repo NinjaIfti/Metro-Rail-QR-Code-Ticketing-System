@@ -55,7 +55,7 @@
                         <input type="radio" name="user_type" value="customer" class="hidden" checked>
                         <div class="flex flex-col items-center">
                             <i class="fas fa-user text-metro-primary text-xl mb-2"></i>
-                            <span class="text-sm font-medium">Customer</span>
+                            <span class="text-sm font-medium">Commuters</span>
                         </div>
                         <div class="absolute top-2 right-2 text-metro-secondary hidden check-icon">
                             <i class="fas fa-check-circle"></i>
