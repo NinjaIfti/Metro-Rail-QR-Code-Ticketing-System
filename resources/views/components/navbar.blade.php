@@ -18,7 +18,7 @@
                 <span>Buy Ticket</span>
             </a>
 
-            <a href="/schedule" class="hover:text-metro-secondary transition duration-300 flex items-center space-x-1">
+            <a href="{{ route('SCHEDULE') }}" class="hover:text-metro-secondary transition duration-300 flex items-center space-x-1">
                 <i class="fas fa-clock text-xs"></i>
                 <span>Schedule</span>
             </a>
@@ -26,14 +26,14 @@
                 <i class="fas fa-question-circle text-xs"></i>
                 <span>FAQ</span>
             </a>
-            <a href="/contact-us" class="hover:text-metro-secondary transition duration-300 flex items-center space-x-1">
+            <a href="{{ route('CONTACT') }}" class="hover:text-metro-secondary transition duration-300 flex items-center space-x-1">
                 <i class="fas fa-envelope text-xs"></i>
                 <span>Contact</span>
             </a>
         </div>
         <div class="hidden md:flex items-center space-x-4">
-            <a href="/login" class="px-4 py-2 border border-metro-secondary text-metro-secondary rounded-lg hover:bg-metro-secondary hover:text-white transition duration-300">Login</a>
-            <a href="/register" class="px-4 py-2 bg-metro-secondary text-white rounded-lg hover:bg-yellow-500 transition duration-300">Register</a>
+            <a href="{{ route('Login') }}" class="px-4 py-2 border border-metro-secondary text-metro-secondary rounded-lg hover:bg-metro-secondary hover:text-white transition duration-300">Login</a>
+            <a href="{{ route('Register') }}" class="px-4 py-2 bg-metro-secondary text-white rounded-lg hover:bg-yellow-500 transition duration-300">Register</a>
         </div>
         <button class="md:hidden text-white">
             <i class="fas fa-bars text-2xl"></i>
