@@ -48,6 +48,7 @@ class TicketController extends Controller
             'journey_date' => 'required|date|after_or_equal:today',
             'departure_time' => 'required',
             'number_of_passengers' => 'required|integer|min:1',
+            'payment_option' => 'required|in:pay_now,pay_later',
         ]);
 
         // Calculate fare based on from and to stations
@@ -55,6 +56,9 @@ class TicketController extends Controller
 
         // Calculate arrival time based on from and to stations
         $arrivalTime = $this->calculateArrivalTime($request->from_station, $request->to_station, $request->departure_time);
+
+        // Determine payment status
+        $paymentStatus = ($request->payment_option === 'pay_now') ? 'paid' : 'unpaid';
 
         // Create the ticket
         $ticket = new Ticket([
@@ -68,6 +72,7 @@ class TicketController extends Controller
             'number_of_passengers' => $request->number_of_passengers,
             'fare' => $fare,
             'status' => 'active',
+            'payment_status' => $paymentStatus,
         ]);
 
         $ticket->save();
@@ -79,16 +84,25 @@ class TicketController extends Controller
             'to' => $ticket->to_station,
             'date' => $ticket->journey_date,
             'passengers' => $ticket->number_of_passengers,
+            'payment_status' => $ticket->payment_status,
         ]);
 
         $qrCodePath = 'qrcodes/' . $ticket->ticket_number . '.svg';
+
+        // Make sure the directory exists
+        Storage::disk('public')->makeDirectory('qrcodes', 0755, true, true);
+
         $qrCode = QrCode::size(200)->generate($qrContent);
         Storage::disk('public')->put($qrCodePath, $qrCode);
 
         $ticket->qr_code = $qrCodePath;
         $ticket->save();
 
-        return redirect()->route('tickets.show', $ticket->id)->with('success', 'Ticket booked successfully!');
+        if ($paymentStatus === 'paid') {
+            return response()->json(['success' => true, 'message' => 'Ticket booked and paid successfully', 'ticket_id' => $ticket->id]);
+        } else {
+            return redirect()->route('tickets.index')->with('success', 'Ticket booked successfully! Payment is pending.');
+        }
     }
 
     /**
@@ -125,6 +139,11 @@ class TicketController extends Controller
             return redirect()->route('tickets.index')->with('error', 'This ticket cannot be edited');
         }
 
+        // Check if the ticket is paid
+        if ($ticket->payment_status === 'paid') {
+            return redirect()->route('tickets.index')->with('error', 'Paid tickets cannot be edited');
+        }
+
         $stations = ['Uttara North', 'Uttara Center', 'Uttara South', 'Pallabi', 'Mirpur 11', 'Mirpur 10', 'Kazipara', 'Shewrapara', 'Agargaon', 'Farmgate', 'Karwan Bazar', 'Shahbag', 'Dhaka University', 'Bangladesh Secretariat', 'Motijheel'];
 
         return view('tickets.edit', compact('ticket', 'stations'));
@@ -147,6 +166,11 @@ class TicketController extends Controller
         // Check if the ticket is still active and can be edited
         if ($ticket->status !== 'active') {
             return redirect()->route('tickets.index')->with('error', 'This ticket cannot be edited');
+        }
+
+        // Check if the ticket is paid
+        if ($ticket->payment_status === 'paid') {
+            return redirect()->route('tickets.index')->with('error', 'Paid tickets cannot be edited');
         }
 
         $request->validate([
@@ -180,13 +204,14 @@ class TicketController extends Controller
             'to' => $ticket->to_station,
             'date' => $ticket->journey_date,
             'passengers' => $ticket->number_of_passengers,
+            'payment_status' => $ticket->payment_status,
         ]);
 
         $qrCodePath = 'qrcodes/' . $ticket->ticket_number . '.svg';
         $qrCode = QrCode::size(200)->generate($qrContent);
         Storage::disk('public')->put($qrCodePath, $qrCode);
 
-        return redirect()->route('tickets.show', $ticket->id)->with('success', 'Ticket updated successfully!');
+        return redirect()->route('tickets.index')->with('success', 'Ticket updated successfully!');
     }
 
     /**
@@ -207,6 +232,11 @@ class TicketController extends Controller
             return redirect()->route('tickets.index')->with('error', 'This ticket cannot be cancelled');
         }
 
+        // Check if the ticket is paid
+        if ($ticket->payment_status === 'paid') {
+            return redirect()->route('tickets.index')->with('error', 'Paid tickets cannot be cancelled in this demo');
+        }
+
         $ticket->status = 'cancelled';
         $ticket->save();
 
@@ -214,17 +244,90 @@ class TicketController extends Controller
     }
 
     /**
-     * Remove the specified ticket from storage.
+     * Process payment for a ticket.
      *
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ticket $ticket)
+    public function processPayment(Ticket $ticket)
     {
-        // In a real application, you might want to keep records of tickets
-        // Even if they are cancelled, for accounting and auditing purposes
-        // So we'll implement the 'cancel' method above instead of actual deletion
-        return redirect()->route('tickets.index')->with('error', 'Tickets cannot be deleted');
+        // Check if the ticket belongs to the authenticated user
+        if ($ticket->user_id !== Auth::id()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized access']);
+        }
+
+        // Check if the ticket is still active
+        if ($ticket->status !== 'active') {
+            return response()->json(['success' => false, 'message' => 'This ticket cannot be paid for']);
+        }
+
+        // Check if the ticket is already paid
+        if ($ticket->payment_status === 'paid') {
+            return response()->json(['success' => false, 'message' => 'This ticket is already paid']);
+        }
+
+        // In a real application, you would process payment here
+        // For this demo, we'll just mark the ticket as paid
+        $ticket->payment_status = 'paid';
+        $ticket->save();
+
+        // Update QR code with new payment status
+        $qrContent = json_encode([
+            'ticket_number' => $ticket->ticket_number,
+            'from' => $ticket->from_station,
+            'to' => $ticket->to_station,
+            'date' => $ticket->journey_date,
+            'passengers' => $ticket->number_of_passengers,
+            'payment_status' => $ticket->payment_status,
+        ]);
+
+        $qrCodePath = 'qrcodes/' . $ticket->ticket_number . '.svg';
+        $qrCode = QrCode::size(200)->generate($qrContent);
+        Storage::disk('public')->put($qrCodePath, $qrCode);
+
+        return response()->json(['success' => true, 'message' => 'Payment processed successfully']);
+    }
+
+    /**
+     * Display the view modal content for a ticket.
+     *
+     * @param  \App\Models\Ticket  $ticket
+     * @return \Illuminate\Http\Response
+     */
+    public function viewModal(Ticket $ticket)
+    {
+        // Check if the ticket belongs to the authenticated user
+        if ($ticket->user_id !== Auth::id()) {
+            return response('Unauthorized', 403);
+        }
+
+        return view('tickets.partials.view-modal', compact('ticket'));
+    }
+
+    /**
+     * Display the edit modal content for a ticket.
+     *
+     * @param  \App\Models\Ticket  $ticket
+     * @return \Illuminate\Http\Response
+     */
+    public function editModal(Ticket $ticket)
+    {
+        // Check if the ticket belongs to the authenticated user
+        if ($ticket->user_id !== Auth::id()) {
+            return response('Unauthorized', 403);
+        }
+
+        // Check if the ticket is still active and can be edited
+        if ($ticket->status !== 'active') {
+            return response('This ticket cannot be edited', 403);
+        }
+
+        // Check if the ticket is paid
+        if ($ticket->payment_status === 'paid') {
+            return response('Paid tickets cannot be edited', 403);
+        }
+
+        return view('tickets.partials.edit-modal', compact('ticket'));
     }
 
     /**

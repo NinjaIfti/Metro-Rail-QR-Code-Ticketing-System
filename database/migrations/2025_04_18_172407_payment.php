@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal('fare', 8, 2);
             $table->string('qr_code')->nullable();
             $table->enum('status', ['active', 'used', 'cancelled'])->default('active');
+            $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
             $table->timestamps();
         });
     }

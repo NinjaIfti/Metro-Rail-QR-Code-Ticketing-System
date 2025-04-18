@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommuterController;
+use App\Http\Controllers\TicketController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -142,3 +143,16 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/commuter/dashboard', [CommuterController::class, 'dashboard'])->name('commuter.dashboard');
+// Add these to your web.php file
+Route::middleware('auth')->group(function () {
+    Route::get('/my-tickets', [TicketController::class, 'index'])->name('tickets.index');
+    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+    Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
+    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+    Route::get('/tickets/{ticket}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
+    Route::put('/tickets/{ticket}', [TicketController::class, 'update'])->name('tickets.update');
+    Route::patch('/tickets/{ticket}/cancel', [TicketController::class, 'cancel'])->name('tickets.cancel');
+    Route::get('/tickets/{ticket}/view-modal', [TicketController::class, 'viewModal'])->name('tickets.view-modal');
+    Route::get('/tickets/{ticket}/edit-modal', [TicketController::class, 'editModal'])->name('tickets.edit-modal');
+    Route::post('/tickets/{ticket}/process-payment', [TicketController::class, 'processPayment'])->name('tickets.process-payment');
+});
