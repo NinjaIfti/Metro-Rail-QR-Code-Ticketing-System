@@ -7,6 +7,9 @@ use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use App\Models\Train;
+use App\Models\Announcement;
+use Carbon\Carbon;
+
 class AdminController extends Controller
 {
     /**
@@ -227,16 +230,7 @@ public function showUserDetails($id)
             'message' => 'User deleted successfully!'
         ]);
     }
-    /**
-     * Show announcements management page.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function announcements()
-    {
-        // TODO: Implement announcements functionality
-        return view('admin.announcements.index');
-    }
+
 
 
 
@@ -551,6 +545,136 @@ public function showScheduleDetails($id)
         \Log::error("Error fetching schedule details for ID: {$id}: " . $e->getMessage());
         return response()->json(['error' => 'Schedule not found'], 404);
     }
+}
+
+
+/**
+ * Show announcements management page.
+ *
+ * @return \Illuminate\Contracts\Support\Renderable
+ */
+public function announcements()
+{
+    $announcements = Announcement::with('user')
+                                ->orderBy('created_at', 'desc')
+                                ->paginate(10);
+
+    return view('admin.announcements.index', compact('announcements'));
+}
+
+/**
+ * Show announcement creation form.
+ *
+ * @return \Illuminate\Contracts\Support\Renderable
+ */
+public function createAnnouncement()
+{
+    return view('admin.announcements.create');
+}
+
+/**
+ * Store a new announcement.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @return \Illuminate\Http\Response
+ */
+public function storeAnnouncement(Request $request)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'status' => 'required|in:active,inactive',
+        'priority' => 'required|in:low,medium,high',
+        'published_at' => 'nullable|date',
+        'expires_at' => 'nullable|date|after_or_equal:published_at',
+    ]);
+
+    // Set published_at to current time if not provided
+    if (empty($validated['published_at'])) {
+        $validated['published_at'] = now();
+    }
+
+    // Add user_id to the validated data
+    $validated['user_id'] = auth()->id();
+
+    Announcement::create($validated);
+
+    return redirect()->route('admin.announcements')
+        ->with('success', 'Announcement created successfully!');
+}
+
+/**
+ * Show edit announcement form.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Contracts\Support\Renderable
+ */
+public function editAnnouncement($id)
+{
+    $announcement = Announcement::findOrFail($id);
+    return view('admin.announcements.edit', compact('announcement'));
+}
+
+/**
+ * Update the specified announcement.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+public function updateAnnouncement(Request $request, $id)
+{
+    $announcement = Announcement::findOrFail($id);
+
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'status' => 'required|in:active,inactive',
+        'priority' => 'required|in:low,medium,high',
+        'published_at' => 'nullable|date',
+        'expires_at' => 'nullable|date|after_or_equal:published_at',
+    ]);
+
+    $announcement->update($validated);
+
+    return redirect()->route('admin.announcements')
+        ->with('success', 'Announcement updated successfully!');
+}
+
+/**
+ * Delete the specified announcement.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+public function deleteAnnouncement($id)
+{
+    $announcement = Announcement::findOrFail($id);
+    $announcement->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Announcement deleted successfully!'
+    ]);
+}
+
+/**
+ * Scope a query to only include active announcements.
+ *
+ * @param  \Illuminate\Database\Eloquent\Builder  $query
+ * @return \Illuminate\Database\Eloquent\Builder
+ */
+public function scopeActive($query)
+{
+    return $query->where('status', 'active')
+        ->where(function ($query) {
+            $query->whereNull('published_at')
+                ->orWhere('published_at', '<=', now());
+        })
+        ->where(function ($query) {
+            $query->whereNull('expires_at')
+                ->orWhere('expires_at', '>=', now());
+        });
 }
 
 }

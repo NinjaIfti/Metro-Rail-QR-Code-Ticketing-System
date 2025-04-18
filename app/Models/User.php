@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', // Added role to fillable attributes
     ];
 
     /**
@@ -43,4 +44,42 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the announcements created by the user.
+     */
+    public function announcements()
+    {
+        return $this->hasMany(Announcement::class);
+    }
+
+    /**
+     * Check if the user is a train master.
+     *
+     * @return bool
+     */
+    public function isTrainMaster()
+    {
+        return $this->role === 'train_master';
+    }
+
+    /**
+     * Check if the user is an admin.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if the user is a commuter.
+     *
+     * @return bool
+     */
+    public function isCommuter()
+    {
+        return $this->role === 'commuter';
+    }
 }

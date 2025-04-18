@@ -15,13 +15,13 @@
 
             if (userMenuButton && userMenu) {
                 // Toggle the dropdown visibility when the user clicks the button
-                userMenuButton.addEventListener('click', function(event) {
+                userMenuButton.addEventListener('click', function (event) {
                     event.stopPropagation();  // Prevent event from bubbling up to the document
                     userMenu.classList.toggle('hidden');
                 });
 
                 // Close the dropdown if the user clicks anywhere outside the button or the menu
-                document.addEventListener('click', function(event) {
+                document.addEventListener('click', function (event) {
                     if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
                         userMenu.classList.add('hidden');
                     }
@@ -100,7 +100,8 @@
         <!-- User Menu -->
         <div class="relative">
             <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none">
-                <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=0D8ABC&color=fff" alt="User"
+                <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=0D8ABC&color=fff"
+                     alt="User"
                      class="h-8 w-8 rounded-full border-2 border-white">
                 <span class="hidden md:inline-block">{{ Auth::user()->name }}</span>
                 <i class="fas fa-chevron-down text-xs"></i>
@@ -138,7 +139,8 @@
 
             <nav class="space-y-1">
                 <!-- Dashboard -->
-                <a href="{{ route('admin.dashboard') }}" class="sidebar-link active flex items-center text-sm px-4 py-3 rounded-md w-full">
+                <a href="{{ route('admin.dashboard') }}"
+                   class="sidebar-link active flex items-center text-sm px-4 py-3 rounded-md w-full">
                     <i class="fas fa-tachometer-alt mr-3 text-lg"></i>
                     <span>Dashboard</span>
                 </a>
@@ -146,8 +148,8 @@
                 <!-- User Management -->
                 <div class="sidebar-section">
                     <a href="{{ route('admin.users') }}"
-                        class="flex items-center justify-between text-sm px-4 py-3 rounded-md w-full hover:bg-gray-100"
-                        id="userManagementToggle">
+                       class="flex items-center justify-between text-sm px-4 py-3 rounded-md w-full hover:bg-gray-100"
+                       id="userManagementToggle">
                         <div class="flex items-center">
                             <i class="fas fa-users mr-3 text-lg"></i>
                             <span>User Management</span>
@@ -156,9 +158,12 @@
                     </a>
 
                     <div class="pl-10 mt-1 space-y-1 dropdown-menu hidden" id="userManagementMenu">
-                        <a href="{{ route('admin.users') }}" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">All Users</a>
-                        <a href="" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Commuters</a>
-                        <a href="" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Train Masters</a>
+                        <a href="{{ route('admin.users') }}"
+                           class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">All Users</a>
+                        <a href=""
+                           class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Commuters</a>
+                        <a href="" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Train
+                            Masters</a>
                         <a href="" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Administrators</a>
                     </div>
                 </div>
@@ -172,12 +177,16 @@
                             <i class="fas fa-train mr-3 text-lg"></i>
                             <span>Train Management</span>
                         </div>
-                        <i class="" onclick="event.stopPropagation(); document.getElementById('trainManagementMenu').classList.toggle('hidden');"></i>
+                        <i class=""
+                           onclick="event.stopPropagation(); document.getElementById('trainManagementMenu').classList.toggle('hidden');"></i>
                     </a>
 
                     <div class="pl-10 mt-1 space-y-1 dropdown-menu hidden" id="trainManagementMenu">
-                        <a href="{{ route('admin.trains') }}" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">All Trains</a>
-                        <a href="#" onclick="event.preventDefault(); window.location.href='{{ route('admin.trains') }}'; setTimeout(function() { showAddTrainModal(); }, 500);" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Add New Train</a>
+                        <a href="{{ route('admin.trains') }}"
+                           class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">All Trains</a>
+                        <a href="#"
+                           onclick="event.preventDefault(); window.location.href='{{ route('admin.trains') }}'; setTimeout(function() { showAddTrainModal(); }, 500);"
+                           class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Add New Train</a>
                         <a href="#" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Maintenance</a>
                     </div>
                 </div>
@@ -201,7 +210,7 @@
                 </a>
 
                 <!-- Announcements -->
-                <a href="#"
+                <a href="{{ route('admin.announcements') }}" ...
                    class="sidebar-link flex items-center text-sm px-4 py-3 rounded-md w-full hover:bg-gray-100">
                     <i class="fas fa-bullhorn mr-3 text-lg"></i>
                     <span>Announcements</span>
@@ -223,7 +232,6 @@
             </nav>
         </div>
     </aside>
-
 
 
     <!-- Main Content -->
@@ -505,17 +513,26 @@
                     <thead class="bg-gray-50">
                     <tr>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Joined
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
                     </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -534,11 +551,15 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                @if($user->roles->first()->name == 'admin') bg-red-100 text-red-800
-                                @elseif($user->roles->first()->name == 'train_master') bg-yellow-100 text-yellow-800
-                                @else bg-blue-100 text-blue-800 @endif">
-                                {{ ucfirst($user->roles->first()->name) }}
-                            </span>
+    @if(($user->roles && $user->roles->first()) ? $user->roles->first()->name == 'admin' : $user->role == 'admin')
+        bg-red-100 text-red-800
+    @elseif(($user->roles && $user->roles->first()) ? $user->roles->first()->name == 'train_master' : $user->role == 'train_master')
+        bg-yellow-100 text-yellow-800
+    @else
+        bg-blue-100 text-blue-800
+    @endif">
+    {{ ucfirst(($user->roles && $user->roles->first()) ? $user->roles->first()->name : $user->role) }}
+</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
@@ -550,10 +571,12 @@
                                 {{ $user->created_at->diffForHumans() }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{{ route('admin.users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">
+                                <a href="{{ route('admin.users.edit', $user->id) }}"
+                                   class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">
                                     Edit
                                 </a>
-                                <button onclick="confirmDelete('{{ route('admin.users.delete', $user->id) }}')" class="text-red-600 hover:text-red-900 focus:outline-none focus:underline">
+                                <button onclick="confirmDelete('{{ route('admin.users.delete', $user->id) }}')"
+                                        class="text-red-600 hover:text-red-900 focus:outline-none focus:underline">
                                     Delete
                                 </button>
                             </td>
@@ -579,19 +602,30 @@
                     <thead class="bg-gray-50">
                     <tr>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Train</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Train
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departure</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Departure
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Arrival</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Arrival
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                        </th>
                         <th scope="col"
-                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
                     </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -606,11 +640,13 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ $schedule->departure_station }}</div>
-                                <div class="text-xs text-gray-500">{{ date('h:i A', strtotime($schedule->departure_time)) }}</div>
+                                <div
+                                    class="text-xs text-gray-500">{{ date('h:i A', strtotime($schedule->departure_time)) }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ $schedule->arrival_station }}</div>
-                                <div class="text-xs text-gray-500">{{ date('h:i A', strtotime($schedule->arrival_time)) }}</div>
+                                <div
+                                    class="text-xs text-gray-500">{{ date('h:i A', strtotime($schedule->arrival_time)) }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ date('M d, Y', strtotime($schedule->schedule_date)) }}
@@ -618,27 +654,33 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($schedule->status == 'on_time')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    <span
+                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                 On Time
                             </span>
                                 @elseif($schedule->status == 'delayed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    <span
+                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                 Delayed ({{ $schedule->delay_minutes }}m)
                             </span>
                                 @else
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    <span
+                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                 Canceled
                             </span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <button onclick="showScheduleDetails({{ $schedule->id }})" class="text-metro-primary hover:text-metro-dark focus:outline-none focus:underline">
+                                <button onclick="showScheduleDetails({{ $schedule->id }})"
+                                        class="text-metro-primary hover:text-metro-dark focus:outline-none focus:underline">
                                     View
                                 </button>
-                                <button onclick="showEditScheduleModal({{ $schedule->id }})" class="text-indigo-600 hover:text-indigo-900 ml-2 focus:outline-none focus:underline">
+                                <button onclick="showEditScheduleModal({{ $schedule->id }})"
+                                        class="text-indigo-600 hover:text-indigo-900 ml-2 focus:outline-none focus:underline">
                                     Edit
                                 </button>
-                                <button onclick="confirmDeleteSchedule({{ $schedule->id }})" class="text-red-600 hover:text-red-900 ml-2 focus:outline-none focus:underline">
+                                <button onclick="confirmDeleteSchedule({{ $schedule->id }})"
+                                        class="text-red-600 hover:text-red-900 ml-2 focus:outline-none focus:underline">
                                     Delete
                                 </button>
                             </td>
@@ -656,7 +698,8 @@
         </div>
 
         <!-- Schedule Details Modal -->
-        <div id="scheduleDetailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div id="scheduleDetailsModal"
+             class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
             <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 lg:w-1/3 shadow-lg rounded-md bg-white">
                 <div class="flex justify-between items-center pb-3">
                     <h3 class="text-xl font-bold text-gray-800" id="modalTitle">Schedule Details</h3>
@@ -666,13 +709,15 @@
                 </div>
                 <div id="scheduleDetailsContent" class="mt-4 space-y-3">
                     <div class="text-center" id="scheduleDetailsLoader">
-                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-metro-primary"></div>
+                        <div
+                            class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-metro-primary"></div>
                         <p class="mt-2 text-gray-500">Loading...</p>
                     </div>
                     <div id="scheduleDetailsInfo" class="hidden"></div>
                 </div>
                 <div class="mt-6 flex justify-end">
-                    <button onclick="closeScheduleDetailsModal()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    <button onclick="closeScheduleDetailsModal()"
+                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                         Close
                     </button>
                 </div>

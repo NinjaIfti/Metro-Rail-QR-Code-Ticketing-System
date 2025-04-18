@@ -18,22 +18,53 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        // Get the selected user type
+        $userType = $request->input('user_type');
 
-            // Check user role and redirect accordingly
-            $user = Auth::user();
-
-            if ($user->hasRole('admin')) {
-                return redirect()->intended('admin/dashboard');
-            } else {
-                return redirect()->intended('dashboard');
+        // Special case for train_master@gmail.com
+        if ($request->email === 'master@gmail.com' && $userType === 'train_master') {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                $request->session()->regenerate();
+                return redirect()->route('train_master.dashboard');
             }
         }
 
+        // Regular authentication flow
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Authentication succeeded
+            $user = Auth::user();
+
+            // Check if the user's role matches the selected user type
+            if ($user->role !== $userType) {
+                // If roles don't match, log the user out and return an error
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => 'You do not have permission to access as ' . $userType,
+                ])->withInput($request->except('password'));
+            }
+
+            // Role matches, regenerate session
+            $request->session()->regenerate();
+
+            // Redirect based on user type
+            switch ($userType) {
+                case 'admin':
+                    return redirect()->route('admin.dashboard');
+                case 'train_master':
+                    return redirect()->route('train_master.dashboard');
+                case 'commuter':
+                default:
+                    return redirect()->intended('dashboard');
+            }
+        }
+
+        // Authentication failed
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
+        ])->withInput($request->except('password'));
     }
 
     /**
@@ -47,5 +78,25 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    /**
+     * Create a default Train Master user
+     */
+    public function createDefaultTrainMaster()
+    {
+        $user = User::where('email', 'master@gmail.com')->first();
+
+        if (!$user) {
+            User::create([
+                'name' => 'Train Master',
+                'email' => 'master@gmail.com',
+                'password' => bcrypt('master123'),
+                'role' => 'train_master'
+            ]);
+            return "Train Master user created successfully!";
+        }
+
+        return "Train Master user already exists!";
     }
 }

@@ -6,6 +6,7 @@
     <title>Dhaka Metro Rail</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -27,7 +28,7 @@
             overflow-x: hidden;
         }
     </style>
-{{--    fav icon --}}
+    {{--    fav icon --}}
     <link rel="icon" type="image/png" href="{{ asset('images/metrorailforico.png') }}">
 
 </head>
@@ -41,13 +42,16 @@
     <div class="absolute inset-0 w-full h-full">
         <!-- Slides -->
         <div class="slides-container relative w-full h-full">
-            <div class="slide absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100" style="background-image: url('{{ asset('images/metroo.jpg') }}');">
+            <div class="slide absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100"
+                 style="background-image: url('{{ asset('images/metroo.jpg') }}');">
                 <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-black/60"></div>
             </div>
-            <div class="slide absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0" style="background-image: url('{{ asset('images/metro.jpg') }}');">
+            <div class="slide absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0"
+                 style="background-image: url('{{ asset('images/metro.jpg') }}');">
                 <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-black/60"></div>
             </div>
-            <div class="slide absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0" style="background-image: url('{{ asset('images/metro-rail.avif') }}');">
+            <div class="slide absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-0"
+                 style="background-image: url('{{ asset('images/metro-rail.avif') }}');">
                 <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-black/60"></div>
             </div>
         </div>
@@ -58,14 +62,18 @@
     <!-- Content (stays the same) -->
     <div class="relative container mx-auto flex flex-col justify-center h-full px-4 sm:px-6 text-white">
         <div class="max-w-2xl">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">Welcome to <span class="text-metro-secondary">Dhaka Metro Rail</span></h1>
-            <p class="text-lg sm:text-xl mb-8 max-w-xl">Experience fast, eco-friendly, and affordable travel across the bustling city of Dhaka.</p>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">Welcome to <span
+                        class="text-metro-secondary">Dhaka Metro Rail</span></h1>
+            <p class="text-lg sm:text-xl mb-8 max-w-xl">Experience fast, eco-friendly, and affordable travel across the
+                bustling city of Dhaka.</p>
             <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <a href="/buy-ticket" class="bg-metro-secondary hover:bg-yellow-500 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg text-lg font-semibold transition duration-300 text-center flex items-center justify-center space-x-2">
+                <a href="/buy-ticket"
+                   class="bg-metro-secondary hover:bg-yellow-500 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg text-lg font-semibold transition duration-300 text-center flex items-center justify-center space-x-2">
                     <i class="fas fa-ticket-alt"></i>
                     <span>Buy Your Ticket</span>
                 </a>
-                <a href="/schedule" class="bg-transparent border-2 border-white hover:border-metro-secondary hover:text-metro-secondary text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg text-lg font-semibold transition duration-300 text-center flex items-center justify-center space-x-2">
+                <a href="/schedule"
+                   class="bg-transparent border-2 border-white hover:border-metro-secondary hover:text-metro-secondary text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg text-lg font-semibold transition duration-300 text-center flex items-center justify-center space-x-2">
                     <i class="fas fa-clock"></i>
                     <span>View Schedule</span>
                 </a>
@@ -73,7 +81,6 @@
         </div>
     </div>
 </section>
-
 
 
 <!-- Quick Info Bar -->
@@ -109,7 +116,8 @@
 <section class="py-16 bg-gradient-to-b from-white to-gray-100 w-full mt-14">
     <div class="container mx-auto px-4 sm:px-6">
         <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-center text-gray-800">Features of Dhaka Metro Rail</h2>
-        <p class="text-lg sm:text-xl text-gray-600 text-center mb-12 max-w-3xl mx-auto">Experience the best of modern public transportation with our world-class metro system.</p>
+        <p class="text-lg sm:text-xl text-gray-600 text-center mb-12 max-w-3xl mx-auto">Experience the best of modern
+            public transportation with our world-class metro system.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
@@ -117,7 +125,9 @@
                     <i class="fas fa-leaf text-green-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl sm:text-2xl font-semibold mb-4 text-center text-gray-800">Eco-Friendly</h3>
-                <p class="text-gray-600 text-center">Our trains run on electricity, helping to reduce pollution and promoting green energy use in the city. Each metro ride reduces carbon emissions compared to other transportation methods.</p>
+                <p class="text-gray-600 text-center">Our trains run on electricity, helping to reduce pollution and
+                    promoting green energy use in the city. Each metro ride reduces carbon emissions compared to other
+                    transportation methods.</p>
             </div>
 
             <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
@@ -125,7 +135,8 @@
                     <i class="fas fa-couch text-blue-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl sm:text-2xl font-semibold mb-4 text-center text-gray-800">Comfortable Travel</h3>
-                <p class="text-gray-600 text-center">Experience modern, comfortable, and spacious train coaches equipped with air conditioning, smooth ride technology, and ergonomic seating for a pleasant journey.</p>
+                <p class="text-gray-600 text-center">Experience modern, comfortable, and spacious train coaches equipped
+                    with air conditioning, smooth ride technology, and ergonomic seating for a pleasant journey.</p>
             </div>
 
             <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
@@ -133,7 +144,9 @@
                     <i class="fas fa-tachometer-alt text-purple-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl sm:text-2xl font-semibold mb-4 text-center text-gray-800">Fast & Reliable</h3>
-                <p class="text-gray-600 text-center">With frequent services and dedicated tracks, our metro system provides fast and reliable transportation across the city, helping you reach your destination on time, every time.</p>
+                <p class="text-gray-600 text-center">With frequent services and dedicated tracks, our metro system
+                    provides fast and reliable transportation across the city, helping you reach your destination on
+                    time, every time.</p>
             </div>
         </div>
 
@@ -143,7 +156,9 @@
                     <i class="fas fa-shield-alt text-red-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl sm:text-2xl font-semibold mb-4 text-center text-gray-800">Safety First</h3>
-                <p class="text-gray-600 text-center">Your safety is our priority. Our stations and trains are equipped with advanced security systems, emergency response mechanisms, and trained personnel to ensure a safe journey for all passengers.</p>
+                <p class="text-gray-600 text-center">Your safety is our priority. Our stations and trains are equipped
+                    with advanced security systems, emergency response mechanisms, and trained personnel to ensure a
+                    safe journey for all passengers.</p>
             </div>
 
             <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
@@ -151,14 +166,16 @@
                     <i class="fas fa-wheelchair text-amber-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl sm:text-2xl font-semibold mb-4 text-center text-gray-800">Accessibility</h3>
-                <p class="text-gray-600 text-center">Designed with accessibility in mind, our stations feature elevators, ramps, tactile pavements, and other facilities to ensure that the metro is accessible to all citizens, including those with mobility challenges.</p>
+                <p class="text-gray-600 text-center">Designed with accessibility in mind, our stations feature
+                    elevators, ramps, tactile pavements, and other facilities to ensure that the metro is accessible to
+                    all citizens, including those with mobility challenges.</p>
             </div>
         </div>
     </div>
 </section>
 
 {{--Testimonial & about us--}}
-@include('.components/testimonial')
+@include('components.announcements')
 
 {{--news & download--}}
 @include('.components/news&donwload')
@@ -170,7 +187,8 @@
 @include('.components/footer')
 
 <!-- Back to Top Button -->
-<button id="back-to-top" class="fixed bottom-8 right-8 bg-metro-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transform transition-transform hover:scale-110 hidden">
+<button id="back-to-top"
+        class="fixed bottom-8 right-8 bg-metro-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transform transition-transform hover:scale-110 hidden">
     <i class="fas fa-arrow-up"></i>
 </button>
 
@@ -199,7 +217,7 @@
 
 <!-- Add this JavaScript at the end of your body tag -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         let currentSlideIndex = 0;
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.absolute.bottom-4 button');
@@ -228,14 +246,14 @@
         }
 
         // Auto rotate slides
-        setInterval(function() {
+        setInterval(function () {
             currentSlideIndex = (currentSlideIndex + 1) % slides.length;
             showSlide(currentSlideIndex);
         }, 5000); // Change slide every 5 seconds
 
         // Click event for dots
         dots.forEach((dot, i) => {
-            dot.addEventListener('click', function() {
+            dot.addEventListener('click', function () {
                 currentSlideIndex = i;
                 showSlide(currentSlideIndex);
             });
