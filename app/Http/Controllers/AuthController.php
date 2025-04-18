@@ -18,8 +18,11 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Get the selected user type
+        // Get the selected user type and map 'customer' to 'commuter'
         $userType = $request->input('user_type');
+        if ($userType === 'customer') {
+            $userType = 'commuter';
+        }
 
         // Special case for train_master@gmail.com
         if ($request->email === 'master@gmail.com' && $userType === 'train_master') {
@@ -57,11 +60,18 @@ class AuthController extends Controller
                     return redirect()->route('train_master.dashboard');
                 case 'commuter':
                 default:
-                    return redirect()->intended('dashboard');
+                    // Redirect commuter to their dashboard (commuter.index)
+                    return view('commuter.index'); // Ensure this view exists in resources/views/commuter/index.blade.php
             }
         }
 
-        // Authentication failed
+        // Authentication failed - add debugging information
+        \Log::info('Login failed', [
+            'email' => $request->email,
+            'user_type' => $userType,
+            'exists' => User::where('email', $request->email)->exists()
+        ]);
+
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->withInput($request->except('password'));
@@ -98,5 +108,25 @@ class AuthController extends Controller
         }
 
         return "Train Master user already exists!";
+    }
+
+    /**
+     * Create a default commuter user
+     */
+    public function createCommuter()
+    {
+        $user = User::where('email', 'jarinah@gmail.com')->first();
+
+        if (!$user) {
+            User::create([
+                'name' => 'Jarinah',
+                'email' => 'jarinah@gmail.com',
+                'password' => bcrypt('jarinah123'),
+                'role' => 'commuter'
+            ]);
+            return "Commuter Created ";
+        }
+
+        return "Commuter exists already";
     }
 }

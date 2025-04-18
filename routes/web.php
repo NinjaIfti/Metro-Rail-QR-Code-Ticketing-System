@@ -127,5 +127,10 @@ Route::get('/announcements', function() {
                     ->paginate(10);
     return view('layouts.announcements', compact('announcements'));
 })->name('announcements');
+// commuter
+Route::middleware(['auth', 'role:commuter'])->get('/commuter/dashboard', function () {
+    return view('commuter.index');
+})->name('commuter.dashboard');
+
 // temporary train master
 Route::get('/create-train-master', [AuthController::class, 'createDefaultTrainMaster']);
