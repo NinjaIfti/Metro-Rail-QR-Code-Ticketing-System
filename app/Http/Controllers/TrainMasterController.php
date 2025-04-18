@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Announcement;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Train;
 class TrainMasterController extends Controller
 {
     /**
@@ -35,105 +35,107 @@ class TrainMasterController extends Controller
         $scheduleCount = Schedule::count();
 
         return view('train_master.dashboard', compact('recentAnnouncements', 'announcementCount', 'scheduleCount'));
+
     }
 
-    /**
-     * Display a listing of the announcements.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function announcements()
-    {
-        $announcements = Announcement::with('user')->latest()->paginate(10);
-        return view('train_master.announcements.index', compact('announcements'));
-    }
 
-    /**
-     * Show the form for creating a new announcement.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function createAnnouncement()
-    {
-        return view('train_master.announcements.create');
-    }
+   /**
+    * Show announcements management page.
+    *
+    * @return \Illuminate\Contracts\Support\Renderable
+    */
+   public function announcements()
+   {
+       $announcements = Announcement::with('user')
+                                   ->orderBy('created_at', 'desc')
+                                   ->paginate(10);
 
-    /**
-     * Store a newly created announcement in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function storeAnnouncement(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'priority' => 'required|integer|min:1|max:5',
-            'is_active' => 'boolean',
-            'published_at' => 'nullable|date',
-            'expires_at' => 'nullable|date|after_or_equal:published_at',
-        ]);
+       return view('admin.announcements.index', compact('announcements'));
+   }
 
-        $announcement = new Announcement($validated);
-        $announcement->user_id = Auth::id();
-        $announcement->save();
+   /**
+    * Show announcement creation form.
+    *
+    * @return \Illuminate\Contracts\Support\Renderable
+    */
+   public function createAnnouncement()
+   {
+       return view('admin.announcements.create');
+   }
 
-        return redirect()->route('train_master.announcements')
-            ->with('success', 'Announcement created successfully.');
-    }
+   /**
+    * Store a new announcement.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+   public function storeAnnouncement(Request $request)
+   {
+       $validated = $request->validate([
+           'title' => 'required|string|max:255',
+           'content' => 'required|string',
+           'status' => 'required|in:active,inactive',
+           'priority' => 'required|in:low,medium,high',
+           'published_at' => 'nullable|date',
+           'expires_at' => 'nullable|date|after_or_equal:published_at',
+       ]);
 
-    /**
-     * Show the form for editing the specified announcement.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function editAnnouncement($id)
-    {
-        $announcement = Announcement::findOrFail($id);
-        return view('train_master.announcements.edit', compact('announcement'));
-    }
+       // Set published_at to current time if not provided
+       if (empty($validated['published_at'])) {
+           $validated['published_at'] = now();
+       }
 
-    /**
-     * Update the specified announcement in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updateAnnouncement(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'priority' => 'required|integer|min:1|max:5',
-            'is_active' => 'boolean',
-            'published_at' => 'nullable|date',
-            'expires_at' => 'nullable|date|after_or_equal:published_at',
-        ]);
+       // Add user_id to the validated data
+       $validated['user_id'] = auth()->id();
 
-        $announcement = Announcement::findOrFail($id);
-        $announcement->update($validated);
+       Announcement::create($validated);
 
-        return redirect()->route('train_master.announcements')
-            ->with('success', 'Announcement updated successfully.');
-    }
+       return redirect()->route('train_master.announcements')
+           ->with('success', 'Announcement created successfully!');
+   }
 
-    /**
-     * Remove the specified announcement from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function deleteAnnouncement($id)
-    {
-        $announcement = Announcement::findOrFail($id);
-        $announcement->delete();
+   /**
+    * Update the specified announcement.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
+   public function updateAnnouncement(Request $request, $id)
+   {
+       $announcement = Announcement::findOrFail($id);
 
-        return redirect()->route('train_master.announcements')
-            ->with('success', 'Announcement deleted successfully.');
-    }
+       $validated = $request->validate([
+           'title' => 'required|string|max:255',
+           'content' => 'required|string',
+           'status' => 'required|in:active,inactive',
+           'priority' => 'required|in:low,medium,high',
+           'published_at' => 'nullable|date',
+           'expires_at' => 'nullable|date|after_or_equal:published_at',
+       ]);
+
+       $announcement->update($validated);
+
+       return redirect()->route('train_master.announcements')
+           ->with('success', 'Announcement updated successfully!');
+   }
+
+   /**
+    * Delete the specified announcement.
+    *
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
+   public function deleteAnnouncement($id)
+   {
+       $announcement = Announcement::findOrFail($id);
+       $announcement->delete();
+
+       return response()->json([
+           'success' => true,
+           'message' => 'Announcement deleted successfully!'
+       ]);
+   }
 
     /**
      * Display a listing of the schedules.
@@ -142,8 +144,14 @@ class TrainMasterController extends Controller
      */
     public function schedules()
     {
+        // Fetch all trains to pass to the view
+        $trains = Train::all();
+
+        // Fetch schedules
         $schedules = Schedule::with('train')->latest()->paginate(10);
-        return view('train_master.schedules.index', compact('schedules'));
+
+        // Pass both schedules and trains to the view
+        return view('train_master.schedules.index', compact('schedules', 'trains'));
     }
 
     /**
@@ -238,4 +246,6 @@ class TrainMasterController extends Controller
         return redirect()->route('train_master.schedules')
             ->with('success', 'Schedule deleted successfully.');
     }
+
+
 }

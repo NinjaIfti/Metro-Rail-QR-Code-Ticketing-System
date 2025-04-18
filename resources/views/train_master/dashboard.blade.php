@@ -132,7 +132,7 @@
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <h3 class="text-lg font-medium text-gray-800 mb-4">Quick Actions</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <a href="{{ route('train_master.announcements.create') }}" class="bg-metro-primary hover:bg-metro-dark text-white rounded-lg p-4 text-center transition-colors">
+                    <a href="{{ route('train_master.announcements') }}" class="bg-metro-primary hover:bg-metro-dark text-white rounded-lg p-4 text-center transition-colors">
                         <i class="fas fa-bullhorn text-2xl mb-2"></i>
                         <p class="font-medium">Post Announcement</p>
                     </a>
