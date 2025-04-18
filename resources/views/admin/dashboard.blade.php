@@ -138,22 +138,22 @@
 
             <nav class="space-y-1">
                 <!-- Dashboard -->
-                <a href="#" class="sidebar-link active flex items-center text-sm px-4 py-3 rounded-md w-full">
+                <a href="{{ route('admin.dashboard') }}" class="sidebar-link active flex items-center text-sm px-4 py-3 rounded-md w-full">
                     <i class="fas fa-tachometer-alt mr-3 text-lg"></i>
                     <span>Dashboard</span>
                 </a>
 
                 <!-- User Management -->
                 <div class="sidebar-section">
-                    <button
+                    <a href="{{ route('admin.users') }}"
                         class="flex items-center justify-between text-sm px-4 py-3 rounded-md w-full hover:bg-gray-100"
                         id="userManagementToggle">
                         <div class="flex items-center">
                             <i class="fas fa-users mr-3 text-lg"></i>
                             <span>User Management</span>
                         </div>
-                        <i class="fas fa-chevron-down text-xs"></i>
-                    </button>
+                        <i class=""></i>
+                    </a>
 
                     <div class="pl-10 mt-1 space-y-1 dropdown-menu hidden" id="userManagementMenu">
                         <a href="{{ route('admin.users') }}" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">All Users</a>
@@ -165,40 +165,32 @@
 
                 <!-- Train Management -->
                 <div class="sidebar-section">
-                    <button
-                        class="flex items-center justify-between text-sm px-4 py-3 rounded-md w-full hover:bg-gray-100"
-                        id="trainManagementToggle">
+                    <a href="{{ route('admin.trains') }}"
+                       class="flex items-center justify-between text-sm px-4 py-3 rounded-md w-full hover:bg-gray-100"
+                       id="trainManagementToggle">
                         <div class="flex items-center">
                             <i class="fas fa-train mr-3 text-lg"></i>
                             <span>Train Management</span>
                         </div>
-                        <i class="fas fa-chevron-down text-xs"></i>
-                    </button>
+                        <i class="" onclick="event.stopPropagation(); document.getElementById('trainManagementMenu').classList.toggle('hidden');"></i>
+                    </a>
 
                     <div class="pl-10 mt-1 space-y-1 dropdown-menu hidden" id="trainManagementMenu">
-                        <a href="#" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">All Trains</a>
-                        <a href="#" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Add New Train</a>
+                        <a href="{{ route('admin.trains') }}" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">All Trains</a>
+                        <a href="#" onclick="event.preventDefault(); window.location.href='{{ route('admin.trains') }}'; setTimeout(function() { showAddTrainModal(); }, 500);" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Add New Train</a>
                         <a href="#" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Maintenance</a>
                     </div>
                 </div>
 
                 <!-- Schedule Management -->
                 <div class="sidebar-section">
-                    <button
-                        class="flex items-center justify-between text-sm px-4 py-3 rounded-md w-full hover:bg-gray-100"
-                        id="scheduleManagementToggle">
+                    <a href="{{ route('admin.schedules') }}"
+                       class="flex items-center justify-between text-sm px-4 py-3 rounded-md w-full hover:bg-gray-100">
                         <div class="flex items-center">
                             <i class="fas fa-calendar-alt mr-3 text-lg"></i>
                             <span>Schedule Management</span>
                         </div>
-                        <i class="fas fa-chevron-down text-xs"></i>
-                    </button>
-
-                    <div class="pl-10 mt-1 space-y-1 dropdown-menu hidden" id="scheduleManagementMenu">
-                        <a href="#" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">View Schedules</a>
-                        <a href="#" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Create Schedule</a>
-                        <a href="#" class="sidebar-link text-sm py-2 pl-2 block rounded-md hover:bg-gray-100">Modify Schedule</a>
-                    </div>
+                    </a>
                 </div>
 
                 <!-- Ticket Management -->
@@ -297,12 +289,16 @@
                     </div>
                     <div class="ml-4">
                         <h3 class="text-gray-500 text-sm">Active Trains</h3>
-                        <p class="text-2xl font-bold">12/15</p>
+                        <p class="text-2xl font-bold">{{ $stats['active_trains'] }}/{{ $stats['total_trains'] }}</p>
                     </div>
                 </div>
                 <div class="mt-3 flex items-center text-sm">
-                    <span class="text-yellow-500 font-medium"><i class="fas fa-exclamation-triangle mr-1"></i>3</span>
+                    <span class="text-yellow-500 font-medium"><i class="fas fa-exclamation-triangle mr-1"></i>{{ $stats['maintenance_trains'] }}</span>
                     <span class="text-gray-500 ml-2">in maintenance</span>
+                    @if($stats['inactive_trains'] > 0)
+                        <span class="text-red-500 font-medium ml-3"><i class="fas fa-times-circle mr-1"></i>{{ $stats['inactive_trains'] }}</span>
+                        <span class="text-gray-500 ml-2">inactive</span>
+                    @endif
                 </div>
             </div>
 
@@ -414,7 +410,7 @@
 
                     <div class="p-4">
                         <div class="space-y-3">
-                            <a href="#"
+                            <a href=""
                                class="block p-3 bg-metro-light rounded-lg hover:bg-metro-primary hover:text-white transition-colors duration-200">
                                 <div class="flex items-center">
                                     <i class="fas fa-user-plus text-lg mr-3"></i>
@@ -569,169 +565,196 @@
         </div>
 
 
-        <!-- Schedule Management Preview -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <!-- Schedule Table (2/3 width) -->
-            <div class="bg-white rounded-lg shadow-md lg:col-span-2">
-                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                    <h2 class="font-bold text-gray-800">Today's Schedule</h2>
-                    <button class="text-metro-primary text-sm hover:underline">View Full Schedule</button>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Train ID
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Route
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Departure Time
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                        <!-- Schedule Row 1 -->
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">MR-101</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">Uttara North - Motijheel</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                07:10 AM
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">On Time</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="#" class="text-metro-primary hover:text-metro-dark">Details</a>
-                            </td>
-                        </tr>
-
-                        <!-- Schedule Row 2 -->
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">MR-102</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">Agargaon - Motijheel</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                07:25 AM
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Delayed (5m)</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="#" class="text-metro-primary hover:text-metro-dark">Details</a>
-                            </td>
-                        </tr>
-
-                        <!-- Schedule Row 3 -->
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">MR-104</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">Uttara North - Agargaon</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                07:40 AM
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">On Time</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="#" class="text-metro-primary hover:text-metro-dark">Details</a>
-                            </td>
-                        </tr>
-
-                        <!-- Schedule Row 4 -->
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">MR-105</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">Motijheel - Uttara North</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                08:00 AM
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">On Time</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="#" class="text-metro-primary hover:text-metro-dark">Details</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Schedule Management Preview Table -->
+        <div class="bg-white rounded-lg shadow-md mb-6">
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="font-bold text-gray-800">Recent Schedules</h2>
+                <a href="{{ route('admin.schedules') }}" class="text-metro-primary text-sm hover:underline">
+                    View All Schedules
+                </a>
             </div>
 
-            <!-- Announcements Panel (1/3 width) -->
-            <div class="bg-white rounded-lg shadow-md">
-                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                    <h2 class="font-bold text-gray-800">Recent Announcements</h2>
-                    <button class="text-metro-primary text-sm hover:underline">Post New</button>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Train</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departure</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Arrival</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($todaySchedules as $schedule)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ $schedule->train->train_id }}</div>
+                                <div class="text-xs text-gray-500">{{ $schedule->train->name }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ $schedule->route_name }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ $schedule->departure_station }}</div>
+                                <div class="text-xs text-gray-500">{{ date('h:i A', strtotime($schedule->departure_time)) }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ $schedule->arrival_station }}</div>
+                                <div class="text-xs text-gray-500">{{ date('h:i A', strtotime($schedule->arrival_time)) }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ date('M d, Y', strtotime($schedule->schedule_date)) }}
+                                <div class="text-xs">{{ ucfirst($schedule->days_of_operation) }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if($schedule->status == 'on_time')
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                On Time
+                            </span>
+                                @elseif($schedule->status == 'delayed')
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Delayed ({{ $schedule->delay_minutes }}m)
+                            </span>
+                                @else
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                Canceled
+                            </span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button onclick="showScheduleDetails({{ $schedule->id }})" class="text-metro-primary hover:text-metro-dark focus:outline-none focus:underline">
+                                    View
+                                </button>
+                                <button onclick="showEditScheduleModal({{ $schedule->id }})" class="text-indigo-600 hover:text-indigo-900 ml-2 focus:outline-none focus:underline">
+                                    Edit
+                                </button>
+                                <button onclick="confirmDeleteSchedule({{ $schedule->id }})" class="text-red-600 hover:text-red-900 ml-2 focus:outline-none focus:underline">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                                No schedules found for today.
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Schedule Details Modal -->
+        <div id="scheduleDetailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+            <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 lg:w-1/3 shadow-lg rounded-md bg-white">
+                <div class="flex justify-between items-center pb-3">
+                    <h3 class="text-xl font-bold text-gray-800" id="modalTitle">Schedule Details</h3>
+                    <button onclick="closeScheduleDetailsModal()" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-
-                <div class="p-4 space-y-4">
-                    <!-- Announcement 1 -->
-                    <div class="border-b border-gray-100 pb-4">
-                        <h3 class="font-medium text-gray-900 mb-1">Scheduled Maintenance Notice</h3>
-                        <p class="text-sm text-gray-600 mb-2">The metro service will be temporarily halted on Sunday
-                            between 11 PM and 5 AM for routine maintenance.</p>
-                        <div class="flex justify-between items-center text-xs text-gray-500">
-                            <span>Posted by: Admin</span>
-                            <span>Posted: Today, 9:15 AM</span>
-                        </div>
+                <div id="scheduleDetailsContent" class="mt-4 space-y-3">
+                    <div class="text-center" id="scheduleDetailsLoader">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-metro-primary"></div>
+                        <p class="mt-2 text-gray-500">Loading...</p>
                     </div>
-
-                    <!-- Announcement 2 -->
-                    <div class="border-b border-gray-100 pb-4">
-                        <h3 class="font-medium text-gray-900 mb-1">Special Schedule for Eid Holiday</h3>
-                        <p class="text-sm text-gray-600 mb-2">A special train schedule will be in effect during the
-                            upcoming Eid holiday. Please check the website for details.</p>
-                        <div class="flex justify-between items-center text-xs text-gray-500">
-                            <span>Posted by: Train Master</span>
-                            <span>Posted: Yesterday</span>
-                        </div>
-                    </div>
-
-                    <!-- Announcement 3 -->
-                    <div>
-                        <h3 class="font-medium text-gray-900 mb-1">New QR Scanning System</h3>
-                        <p class="text-sm text-gray-600 mb-2">We are introducing a new QR code scanning system at all
-                            stations for faster ticket verification. Please have your ticket QR codes ready.</p>
-                        <div class="flex justify-between items-center text-xs text-gray-500">
-                            <span>Posted by: Admin</span>
-                            <span>Posted: 2 days ago</span>
-                        </div>
-                    </div>
+                    <div id="scheduleDetailsInfo" class="hidden"></div>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button onclick="closeScheduleDetailsModal()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
+
+        @push('scripts')
+            <script>
+                function showScheduleDetails(id) {
+                    document.getElementById('scheduleDetailsModal').classList.remove('hidden');
+                    document.getElementById('scheduleDetailsLoader').classList.remove('hidden');
+                    document.getElementById('scheduleDetailsInfo').classList.add('hidden');
+
+                    fetch(`/admin/schedules/${id}/details`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert('Error: ' + data.error);
+                                return;
+                            }
+
+                            let statusClass = '';
+                            if (data.status === 'On time') {
+                                statusClass = 'bg-green-100 text-green-800';
+                            } else if (data.status === 'Delayed') {
+                                statusClass = 'bg-yellow-100 text-yellow-800';
+                            } else {
+                                statusClass = 'bg-red-100 text-red-800';
+                            }
+
+                            const content = `
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="border-b pb-2">
+                        <span class="text-gray-500 text-sm">Train:</span>
+                        <span class="text-gray-900 font-medium ml-2">${data.train.train_id} - ${data.train.name}</span>
+                    </div>
+                    <div class="border-b pb-2">
+                        <span class="text-gray-500 text-sm">Route:</span>
+                        <span class="text-gray-900 font-medium ml-2">${data.route_name}</span>
+                    </div>
+                    <div class="border-b pb-2">
+                        <span class="text-gray-500 text-sm">Departure:</span>
+                        <span class="text-gray-900 font-medium ml-2">${data.departure_station} at ${data.departure_time}</span>
+                    </div>
+                    <div class="border-b pb-2">
+                        <span class="text-gray-500 text-sm">Arrival:</span>
+                        <span class="text-gray-900 font-medium ml-2">${data.arrival_station} at ${data.arrival_time}</span>
+                    </div>
+                    <div class="border-b pb-2">
+                        <span class="text-gray-500 text-sm">Schedule Date:</span>
+                        <span class="text-gray-900 font-medium ml-2">${data.schedule_date}</span>
+                    </div>
+                    <div class="border-b pb-2">
+                        <span class="text-gray-500 text-sm">Days of Operation:</span>
+                        <span class="text-gray-900 font-medium ml-2">${data.days_of_operation}</span>
+                    </div>
+                    <div class="border-b pb-2">
+                        <span class="text-gray-500 text-sm">Status:</span>
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass} ml-2">${data.status}</span>
+                    </div>
+                    <div class="border-b pb-2">
+                        <span class="text-gray-500 text-sm">Notes:</span>
+                        <span class="text-gray-900 font-medium ml-2">${data.notes || 'No notes provided.'}</span>
+                    </div>
+                </div>
+                `;
+
+                            document.getElementById('scheduleDetailsInfo').innerHTML = content;
+                            document.getElementById('scheduleDetailsLoader').classList.add('hidden');
+                            document.getElementById('scheduleDetailsInfo').classList.remove('hidden');
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while fetching schedule details.');
+                        });
+                }
+
+                function closeScheduleDetailsModal() {
+                    document.getElementById('scheduleDetailsModal').classList.add('hidden');
+                }
+            </script>
+        @endpush
     </main>
 </div>
 

@@ -46,7 +46,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
     Route::get('/users/{id}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
     Route::get('/users/{id}', [AdminController::class, 'showUserDetails']);
-
+    Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
 
 
     // Announcements
@@ -64,14 +64,14 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/trains/{id}/edit', [AdminController::class, 'editTrain'])->name('admin.trains.edit');
     Route::put('/trains/{id}', [AdminController::class, 'updateTrain'])->name('admin.trains.update');
     Route::delete('/trains/{id}', [AdminController::class, 'deleteTrain'])->name('admin.trains.delete');
-
-    // Schedule management
-    Route::get('/schedules', [AdminController::class, 'schedules'])->name('admin.schedules');
-    Route::get('/schedules/create', [AdminController::class, 'createSchedule'])->name('admin.schedules.create');
-    Route::post('/schedules', [AdminController::class, 'storeSchedule'])->name('admin.schedules.store');
-    Route::get('/schedules/{id}/edit', [AdminController::class, 'editSchedule'])->name('admin.schedules.edit');
-    Route::put('/schedules/{id}', [AdminController::class, 'updateSchedule'])->name('admin.schedules.update');
-    Route::delete('/schedules/{id}', [AdminController::class, 'deleteSchedule'])->name('admin.schedules.delete');
+Route::get('/trains/{id}/details', [AdminController::class, 'showTrainDetails'])->name('admin.trains.details');
+   // Schedule management
+   Route::get('/schedules', [AdminController::class, 'schedules'])->name('admin.schedules');
+   Route::post('/schedules', [AdminController::class, 'storeSchedule'])->name('admin.schedules.store');
+   Route::get('/schedules/{id}', [AdminController::class, 'getSchedule'])->name('admin.schedules.get');
+   Route::get('/schedules/{id}/details', [AdminController::class, 'showScheduleDetails'])->name('admin.schedules.details');
+   Route::put('/schedules/{id}', [AdminController::class, 'updateSchedule'])->name('admin.schedules.update');
+   Route::delete('/schedules/{id}', [AdminController::class, 'deleteSchedule'])->name('admin.schedules.delete');
 
     // Ticket management
     Route::get('/tickets', [AdminController::class, 'tickets'])->name('admin.tickets');
