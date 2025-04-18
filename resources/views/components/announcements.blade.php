@@ -39,27 +39,7 @@
                     </div>
                 </div>
 
-                <!-- Announcement Modal -->
-                <div class="modal fade" id="announcementModal{{ $announcement->id }}" tabindex="-1" aria-labelledby="announcementModalLabel{{ $announcement->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="announcementModalLabel{{ $announcement->id }}">{{ $announcement->title }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                {!! $announcement->content !!}
-                                <hr class="my-4">
-                                <div class="text-sm text-gray-500">
-                                    Posted {{ $announcement->published_at->format('F j, Y, g:i a') }} by {{ $announcement->user->name }}
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             @empty
                 <div class="col-span-3 text-center p-8 bg-white rounded-xl shadow-lg">
                     <i class="fas fa-info-circle text-3xl text-gray-400 mb-4"></i>
