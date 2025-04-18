@@ -39,7 +39,7 @@
                     </div>
                 </div>
 
-                
+
             @empty
                 <div class="col-span-3 text-center p-8 bg-white rounded-xl shadow-lg">
                     <i class="fas fa-info-circle text-3xl text-gray-400 mb-4"></i>
