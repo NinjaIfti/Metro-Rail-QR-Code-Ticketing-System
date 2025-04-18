@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\CommuterController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -134,3 +134,11 @@ Route::middleware(['auth', 'role:commuter'])->get('/commuter/dashboard', functio
 
 // temporary train master
 Route::get('/create-train-master', [AuthController::class, 'createDefaultTrainMaster']);
+
+// Ticket Routes
+Route::middleware(['auth'])->group(function () {
+    Route::resource('tickets', TicketController::class);
+    Route::post('tickets/{ticket}/cancel', [TicketController::class, 'cancel'])->name('tickets.cancel');
+});
+
+Route::get('/commuter/dashboard', [CommuterController::class, 'dashboard'])->name('commuter.dashboard');
