@@ -38,6 +38,10 @@
             <a href="{{ route('train_master.announcements') }}" class="block py-2.5 px-4 hover:bg-metro-dark transition duration-200">
                 <i class="fas fa-bullhorn mr-2"></i> Announcements
             </a>
+            <!-- Train Management Link for Sidebar -->
+            <a href="{{ route('train_master.trains') }}" class="block py-2.5 px-4 hover:bg-metro-dark transition duration-200">
+                <i class="fas fa-train mr-2"></i> Train Management
+            </a>
             <a href="{{ route('train_master.schedules') }}" class="block py-2.5 px-4 hover:bg-metro-dark transition duration-200">
                 <i class="fas fa-calendar-alt mr-2"></i> Schedules
             </a>

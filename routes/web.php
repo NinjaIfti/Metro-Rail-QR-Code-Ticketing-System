@@ -156,3 +156,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/tickets/{ticket}/edit-modal', [TicketController::class, 'editModal'])->name('tickets.edit-modal');
     Route::post('/tickets/{ticket}/process-payment', [TicketController::class, 'processPayment'])->name('tickets.process-payment');
 });
+// Routes for Train Master Train Management
+Route::middleware(['auth', 'role:train_master'])->prefix('train-master')->name('train_master.')->group(function () {
+    // Existing routes
+    Route::get('/dashboard', [App\Http\Controllers\TrainMasterController::class, 'dashboard'])->name('dashboard');
+    Route::get('/announcements', [App\Http\Controllers\TrainMasterController::class, 'announcements'])->name('announcements');
+    Route::get('/schedules', [App\Http\Controllers\TrainMasterController::class, 'schedules'])->name('schedules');
+
+    // New train management routes
+    Route::get('/trains', [App\Http\Controllers\TrainMasterController::class, 'trains'])->name('trains');
+    Route::get('/trains/create', [App\Http\Controllers\TrainMasterController::class, 'createTrain'])->name('trains.create');
+    Route::post('/trains', [App\Http\Controllers\TrainMasterController::class, 'storeTrain'])->name('trains.store');
+    Route::get('/trains/{id}/edit', [App\Http\Controllers\TrainMasterController::class, 'editTrain'])->name('trains.edit');
+    Route::put('/trains/{id}', [App\Http\Controllers\TrainMasterController::class, 'updateTrain'])->name('trains.update');
+    Route::delete('/trains/{id}', [App\Http\Controllers\TrainMasterController::class, 'deleteTrain'])->name('trains.delete');
+    Route::get('/trains/{id}/details', [App\Http\Controllers\TrainMasterController::class, 'showTrainDetails'])->name('trains.details');
+});

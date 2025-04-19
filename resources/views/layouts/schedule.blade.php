@@ -130,7 +130,8 @@
 <main class="container mx-auto px-4 py-8 max-w-7xl">
     <div class="text-center mb-10">
         <h1 class="text-3xl font-bold text-metro-dark mb-2">Metro Rail Schedule</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">Plan your journey with Dhaka Metro Rail's comprehensive schedule and real-time train information.</p>
+        <p class="text-gray-600 max-w-2xl mx-auto">Plan your journey with Dhaka Metro Rail's comprehensive schedule and
+            real-time train information.</p>
     </div>
 
     <div class="flex flex-col lg:flex-row gap-8">
@@ -145,8 +146,10 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="route-direction" class="block text-sm font-medium text-gray-700 mb-1">Route Direction</label>
-                        <select id="route-direction" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
+                        <label for="route-direction" class="block text-sm font-medium text-gray-700 mb-1">Route
+                            Direction</label>
+                        <select id="route-direction"
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
                             <option value="north-south">Uttara North → Kamlapur</option>
                             <option value="south-north">Kamlapur → Uttara North</option>
                         </select>
@@ -154,28 +157,33 @@
 
                     <div>
                         <label for="schedule-date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                        <input type="date" id="schedule-date" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
+                        <input type="date" id="schedule-date"
+                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
                     </div>
                 </div>
 
                 <div class="mt-4">
                     <label for="day-type" class="block text-sm font-medium text-gray-700 mb-1">Schedule Type</label>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-metro-light transition-all group">
-                            <input type="radio" name="day-type" value="weekday" class="mr-2 accent-metro-primary" checked>
+                        <label
+                            class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-metro-light transition-all group">
+                            <input type="radio" name="day-type" value="weekday" class="mr-2 accent-metro-primary"
+                                   checked>
                             <div>
                                 <span class="font-medium group-hover:text-metro-primary transition-all">Weekday</span>
                                 <p class="text-xs text-gray-500">Mon-Fri</p>
                             </div>
                         </label>
-                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-metro-light transition-all group">
+                        <label
+                            class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-metro-light transition-all group">
                             <input type="radio" name="day-type" value="weekend" class="mr-2 accent-metro-primary">
                             <div>
                                 <span class="font-medium group-hover:text-metro-primary transition-all">Weekend</span>
                                 <p class="text-xs text-gray-500">Sat-Sun</p>
                             </div>
                         </label>
-                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-metro-light transition-all group">
+                        <label
+                            class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-metro-light transition-all group">
                             <input type="radio" name="day-type" value="holiday" class="mr-2 accent-metro-primary">
                             <div>
                                 <span class="font-medium group-hover:text-metro-primary transition-all">Holiday</span>
@@ -186,7 +194,8 @@
                 </div>
 
                 <div class="mt-6 flex justify-center">
-                    <button id="show-schedule" class="bg-metro-primary hover:bg-metro-dark text-white py-2 px-6 rounded-lg transition-all font-medium flex items-center">
+                    <button id="show-schedule"
+                            class="bg-metro-primary hover:bg-metro-dark text-white py-2 px-6 rounded-lg transition-all font-medium flex items-center">
                         <i class="fas fa-search mr-2"></i>
                         Show Schedule
                     </button>
@@ -227,11 +236,26 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Station</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">First Train</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Train</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Frequency</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">View Times</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
+                                Station
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                First Train
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Last Train
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Frequency
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                View Times
+                            </th>
                         </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -250,7 +274,8 @@
                                 <span class="text-gray-500 text-xs">10-12 min (off-peak)</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button onclick="toggleTimes('uttara-north')" class="text-metro-primary hover:text-metro-dark">
+                                <button onclick="toggleTimes('uttara-north')"
+                                        class="text-metro-primary hover:text-metro-dark">
                                     <i class="fas fa-chevron-down"></i> Show
                                 </button>
                             </td>
@@ -274,7 +299,9 @@
                                     <!-- More time slots would be here -->
                                 </div>
                                 <div class="mt-2 text-right">
-                                    <button class="text-xs text-metro-primary hover:underline" onclick="showAllTimes('uttara-north')">Show full timetable</button>
+                                    <button class="text-xs text-metro-primary hover:underline"
+                                            onclick="showAllTimes('uttara-north')">Show full timetable
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -294,7 +321,8 @@
                                 <span class="text-gray-500 text-xs">10-12 min (off-peak)</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button onclick="toggleTimes('uttara-center')" class="text-metro-primary hover:text-metro-dark">
+                                <button onclick="toggleTimes('uttara-center')"
+                                        class="text-metro-primary hover:text-metro-dark">
                                     <i class="fas fa-chevron-down"></i> Show
                                 </button>
                             </td>
@@ -318,7 +346,9 @@
                                     <!-- More time slots would be here -->
                                 </div>
                                 <div class="mt-2 text-right">
-                                    <button class="text-xs text-metro-primary hover:underline" onclick="showAllTimes('uttara-center')">Show full timetable</button>
+                                    <button class="text-xs text-metro-primary hover:underline"
+                                            onclick="showAllTimes('uttara-center')">Show full timetable
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -338,7 +368,8 @@
                                 <span class="text-gray-500 text-xs">10-12 min (off-peak)</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button onclick="toggleTimes('uttara-south')" class="text-metro-primary hover:text-metro-dark">
+                                <button onclick="toggleTimes('uttara-south')"
+                                        class="text-metro-primary hover:text-metro-dark">
                                     <i class="fas fa-chevron-down"></i> Show
                                 </button>
                             </td>
@@ -370,7 +401,8 @@
                                 <span class="text-gray-500 text-xs">10-12 min (off-peak)</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button onclick="toggleTimes('pallabi')" class="text-metro-primary hover:text-metro-dark">
+                                <button onclick="toggleTimes('pallabi')"
+                                        class="text-metro-primary hover:text-metro-dark">
                                     <i class="fas fa-chevron-down"></i> Show
                                 </button>
                             </td>
@@ -390,7 +422,8 @@
                                 <span class="text-gray-500 text-xs">10-12 min (off-peak)</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button onclick="toggleTimes('mirpur-11')" class="text-metro-primary hover:text-metro-dark">
+                                <button onclick="toggleTimes('mirpur-11')"
+                                        class="text-metro-primary hover:text-metro-dark">
                                     <i class="fas fa-chevron-down"></i> Show
                                 </button>
                             </td>
@@ -411,7 +444,8 @@
                                 <span class="text-gray-500 text-xs">10-12 min (off-peak)</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button onclick="toggleTimes('kamlapur')" class="text-metro-primary hover:text-metro-dark">
+                                <button onclick="toggleTimes('kamlapur')"
+                                        class="text-metro-primary hover:text-metro-dark">
                                     <i class="fas fa-chevron-down"></i> Show
                                 </button>
                             </td>
@@ -421,7 +455,8 @@
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <button id="download-pdf" class="flex items-center text-metro-primary hover:text-metro-dark font-medium">
+                    <button id="download-pdf"
+                            class="flex items-center text-metro-primary hover:text-metro-dark font-medium">
                         <i class="fas fa-download mr-2"></i>
                         Download PDF
                     </button>
@@ -438,8 +473,10 @@
                 <div class="grid grid-cols-1 md:grid-cols-7 gap-4 items-center">
                     <!-- From Station -->
                     <div class="md:col-span-3">
-                        <label for="journey-from" class="block text-sm font-medium text-gray-700 mb-1">From Station</label>
-                        <select id="journey-from" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
+                        <label for="journey-from" class="block text-sm font-medium text-gray-700 mb-1">From
+                            Station</label>
+                        <select id="journey-from"
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
                             <option value="">Select departure station</option>
                             <option value="uttara-north">Uttara North</option>
                             <option value="uttara-center">Uttara Center</option>
@@ -463,7 +500,9 @@
 
                     <!-- Swap Button -->
                     <div class="md:col-span-1 flex justify-center items-end pb-1">
-                        <button id="swap-journey-stations" class="bg-metro-primary text-white p-2 rounded-full hover:bg-metro-dark transition-all" title="Swap stations">
+                        <button id="swap-journey-stations"
+                                class="bg-metro-primary text-white p-2 rounded-full hover:bg-metro-dark transition-all"
+                                title="Swap stations">
                             <i class="fas fa-exchange-alt"></i>
                         </button>
                     </div>
@@ -471,7 +510,8 @@
                     <!-- To Station -->
                     <div class="md:col-span-3">
                         <label for="journey-to" class="block text-sm font-medium text-gray-700 mb-1">To Station</label>
-                        <select id="journey-to" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
+                        <select id="journey-to"
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
                             <option value="">Select arrival station</option>
                             <option value="uttara-north">Uttara North</option>
                             <option value="uttara-center">Uttara Center</option>
@@ -497,17 +537,21 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div>
                         <label for="journey-date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                        <input type="date" id="journey-date" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
+                        <input type="date" id="journey-date"
+                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
                     </div>
 
                     <div>
-                        <label for="journey-time" class="block text-sm font-medium text-gray-700 mb-1">Preferred Time</label>
-                        <input type="time" id="journey-time" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
+                        <label for="journey-time" class="block text-sm font-medium text-gray-700 mb-1">Preferred
+                            Time</label>
+                        <input type="time" id="journey-time"
+                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-metro-primary focus:ring focus:ring-metro-primary focus:ring-opacity-50 py-2 px-3 border">
                     </div>
                 </div>
 
                 <div class="mt-6 flex justify-center">
-                    <button id="plan-journey" class="bg-metro-primary hover:bg-metro-dark text-white py-2 px-6 rounded-lg transition-all font-medium flex items-center">
+                    <button id="plan-journey"
+                            class="bg-metro-primary hover:bg-metro-dark text-white py-2 px-6 rounded-lg transition-all font-medium flex items-center">
                         <i class="fas fa-search mr-2"></i>
                         Find Routes
                     </button>
@@ -515,7 +559,14 @@
             </div>
         </div>
 
-        <!-- Right Side: Map and Information -->
-        <div class="w-full lg:w-2/5">
-            <!-- Metro Map -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+        <!-- Metro Map -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+            <div class="text-center">
+                <img src="{{ asset('images/clock.jpg') }}" alt="Metro Clock" class="mx-auto rounded-lg shadow-sm mb-4">
+                <p class="text-sm text-gray-600 mt-2">Official Metro Rail Time</p>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
