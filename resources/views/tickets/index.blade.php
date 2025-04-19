@@ -22,6 +22,8 @@
             }
         }
 
+        // Replace all your JavaScript in the head section with this consolidated version
+
         // Payment processing functions
         function payForTicket(ticketId) {
             // Show payment modal
@@ -43,18 +45,26 @@
                         ticket_id: ticketId
                     })
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         if (data.success) {
                             // Show success message
                             document.getElementById('payment-success').classList.remove('hidden');
                             document.getElementById('payment-message').classList.add('hidden');
 
-                            // Reload the page after 3 seconds
+                            // Show popup message
+                            alert('Payment successful! Your ticket has been booked.');
+
+                            // Redirect to tickets page after 2 seconds
                             setTimeout(function() {
                                 closePaymentModal();
-                                window.location.reload();
-                            }, 3000);
+                                window.location.href = '/tickets';
+                            }, 2000);
                         } else {
                             document.getElementById('payment-message').textContent = data.message || 'Payment failed. Please try again.';
                         }
@@ -80,16 +90,132 @@
             document.body.classList.remove('overflow-hidden');
         }
 
-        // Wait for DOM to be fully loaded
+        function openTicketModal(type) {
+            if (type === 'create') {
+                document.getElementById('createTicketModal').classList.remove('hidden');
+            } else if (type === 'edit') {
+                document.getElementById('editTicketModal').classList.remove('hidden');
+            } else if (type === 'view') {
+                document.getElementById('viewTicketModal').classList.remove('hidden');
+            }
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeTicketModal(type) {
+            if (type === 'create') {
+                document.getElementById('createTicketModal').classList.add('hidden');
+            } else if (type === 'edit') {
+                document.getElementById('editTicketModal').classList.add('hidden');
+            } else if (type === 'view') {
+                document.getElementById('viewTicketModal').classList.add('hidden');
+            }
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Opening view ticket modal with AJAX content load
+        function openViewTicketModal(ticketId) {
+            // Show the modal
+            openTicketModal('view');
+
+            // Load the ticket details via AJAX
+            fetch(`/tickets/${ticketId}/view-modal`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('viewTicketContent').innerHTML = html;
+                })
+                .catch(error => {
+                    document.getElementById('viewTicketContent').innerHTML = `
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded" role="alert">
+                    <p>Error loading ticket details. Please try again.</p>
+                </div>
+            `;
+                    console.error('Error loading ticket details:', error);
+                });
+        }
+
+        // Opening edit ticket modal with AJAX content load
+        function openEditTicketModal(ticketId) {
+            // Show the modal
+            openTicketModal('edit');
+
+            // Load the ticket edit form via AJAX
+            fetch(`/tickets/${ticketId}/edit-modal`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('editTicketContent').innerHTML = html;
+                    // Initialize fare calculation for the edit form
+                    initFareCalculation('edit');
+                })
+                .catch(error => {
+                    document.getElementById('editTicketContent').innerHTML = `
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded" role="alert">
+                    <p>Error loading ticket edit form. Please try again.</p>
+                </div>
+            `;
+                    console.error('Error loading ticket edit form:', error);
+                });
+        }
+
+        function printTicket() {
+            window.print();
+        }
+
+        // Fare calculation functionality
+        function initFareCalculation(type) {
+            const formPrefix = type === 'edit' ? 'edit_' : '';
+
+            const fromStation = document.getElementById(`${formPrefix}from_station`);
+            const toStation = document.getElementById(`${formPrefix}to_station`);
+            const passengers = document.getElementById(`${formPrefix}number_of_passengers`);
+            const fareEstimate = document.getElementById(`${formPrefix}fare_estimate`);
+            const estimatedFare = document.getElementById(`${formPrefix}estimated_fare`);
+
+            if (!fromStation || !toStation || !passengers || !fareEstimate || !estimatedFare) return;
+
+            function updateFareEstimate() {
+                if (fromStation.value && toStation.value && passengers.value) {
+                    fareEstimate.classList.remove('hidden');
+
+                    // Get station indices
+                    const stations = ['Uttara North', 'Uttara Center', 'Uttara South', 'Pallabi', 'Mirpur 11', 'Mirpur 10', 'Kazipara', 'Shewrapara', 'Agargaon', 'Farmgate', 'Karwan Bazar', 'Shahbag', 'Dhaka University', 'Bangladesh Secretariat', 'Motijheel'];
+                    const fromIndex = stations.indexOf(fromStation.value);
+                    const toIndex = stations.indexOf(toStation.value);
+
+                    // Calculate fare
+                    const stationCount = Math.abs(fromIndex - toIndex);
+                    const baseFare = 20 + (stationCount * 5);
+                    const totalFare = baseFare * parseInt(passengers.value);
+
+                    estimatedFare.textContent = `৳${totalFare.toFixed(2)}`;
+                } else {
+                    fareEstimate.classList.add('hidden');
+                }
+            }
+
+            fromStation.addEventListener('change', updateFareEstimate);
+            toStation.addEventListener('change', updateFareEstimate);
+            passengers.addEventListener('input', updateFareEstimate);
+
+            // Initialize the fare estimate if values are already filled
+            updateFareEstimate();
+        }
+
+        // Wait for DOM to be fully loaded - SINGLE EVENT LISTENER
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded");
+
             // Initialize ticket form handling
             const ticketForm = document.querySelector('form[action*="tickets.store"]');
 
             if (ticketForm) {
-                ticketForm.addEventListener('submit', function(e) {
-                    const paymentOption = document.querySelector('input[name="payment_option"]:checked').value;
+                console.log("Ticket form found, adding event listener");
 
-                    if (paymentOption === 'pay_now') {
+                ticketForm.addEventListener('submit', function(e) {
+                    console.log("Form submitted");
+                    const paymentOption = document.querySelector('input[name="payment_option"]:checked');
+
+                    if (paymentOption && paymentOption.value === 'pay_now') {
+                        console.log("Payment option is pay_now");
                         e.preventDefault(); // This prevents the default form submission
 
                         // Show payment modal
@@ -98,8 +224,12 @@
                         // Get form data
                         const formData = new FormData(this);
 
+                        // Log the URL we're submitting to
+                        console.log("Submitting to:", this.action);
+
                         // Simulate payment processing
                         setTimeout(function() {
+                            console.log("Submitting form via AJAX");
                             // Submit the form via AJAX
                             fetch(ticketForm.action, {
                                 method: 'POST',
@@ -109,39 +239,72 @@
                                 }
                             })
                                 .then(response => {
+                                    console.log("Got response:", response.status);
                                     if (!response.ok) {
-                                        throw new Error('Network response was not ok');
+                                        throw new Error('Server returned ' + response.status);
                                     }
                                     return response.json();
                                 })
                                 .then(data => {
+                                    console.log("Response data:", data);
                                     // Hide spinner
                                     document.getElementById('payment-loading').classList.add('hidden');
 
                                     if (data.success) {
+                                        console.log("Booking successful!");
                                         // Show success message
                                         document.getElementById('payment-success').classList.remove('hidden');
                                         document.getElementById('payment-message').classList.add('hidden');
 
-                                        // Redirect to tickets page after 3 seconds
+                                        // Show popup message
+                                        alert('Payment successful! Your ticket has been booked.');
+
+                                        // Redirect to tickets page after 2 seconds
                                         setTimeout(function() {
                                             closePaymentModal();
                                             closeTicketModal('create');
-                                            window.location.href = '/my-tickets';
-                                        }, 3000);
+                                            window.location.href = '/tickets';
+                                        }, 2000);
                                     } else {
                                         document.getElementById('payment-message').textContent = data.message || 'Payment failed. Please try again.';
                                     }
                                 })
                                 .catch(error => {
-                                    document.getElementById('payment-message').textContent = 'Payment failed. Please try again.';
                                     console.error('Error processing payment:', error);
+                                    document.getElementById('payment-loading').classList.add('hidden');
+                                    document.getElementById('payment-message').textContent = 'Payment failed. Please try again.';
                                 });
                         }, 2000); // 2 second delay to simulate payment processing
+                    } else {
+                        // For 'pay_later', we do nothing, letting the form submit normally
+                        console.log("Payment option is pay_later, letting form submit normally");
                     }
-                    // For 'pay_later', we do nothing, letting the form submit normally
                 });
+            } else {
+                console.log("Ticket form not found");
             }
+
+            // Initialize fare calculation for create form
+            initFareCalculation('create');
+
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                const createModal = document.getElementById('createTicketModal');
+                const editModal = document.getElementById('editTicketModal');
+                const viewModal = document.getElementById('viewTicketModal');
+                const paymentModal = document.getElementById('paymentModal');
+
+                if (event.target === createModal) {
+                    closeTicketModal('create');
+                } else if (event.target === editModal) {
+                    closeTicketModal('edit');
+                } else if (event.target === viewModal) {
+                    closeTicketModal('view');
+                } else if (event.target === paymentModal) {
+                    // Don't close payment modal when clicking outside
+                    // This prevents accidental closure during payment processing
+                }
+            });
         });
     </script>
     <style>
