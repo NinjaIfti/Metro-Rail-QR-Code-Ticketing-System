@@ -1,6 +1,6 @@
 {
     "version": 2,
-      "framework": null,
+    "framework": null,
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.6.0" }
     },
@@ -12,8 +12,7 @@
         "APP_ENV": "production",
         "APP_DEBUG": "true",
         "APP_URL": "https://metro-rail-qr-code-ticketing-system.vercel.app/",
-
-
+     "APP_KEY": "base64:1bmz08p6S/so89cPzP7zjYNYOvTPvxVM922dBJHKZMw=",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
@@ -26,3 +25,4 @@
         "SESSION_DRIVER": "cookie"
     }
 }
+
