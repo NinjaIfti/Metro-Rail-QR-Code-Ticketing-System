@@ -561,7 +561,7 @@
 
         <!-- Metro Map -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-            <div class="text-center">
+            php<div class="text-center">
                 <img src="{{ asset('images/clock.jpg') }}" alt="Metro Clock" class="mx-auto rounded-lg shadow-sm mb-4">
                 <p class="text-sm text-gray-600 mt-2">Official Metro Rail Time</p>
             </div>
